@@ -21,7 +21,7 @@
         "main.scss",
         "highlightjs/solarized-light.css"
       ],
-      "scripts": [],
+      "scripts": ["../node_modules/rickshaw/rickshaw.min.js","../node_modules/d3/d3.min.js","../node_modules/jquery/dist/jquery.min.js"],
       "environments": {
         "source": "environments/environment.ts",
         "dev": "environments/environment.ts",
