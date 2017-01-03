@@ -1,9 +1,5 @@
-import * as d3 from 'd3';
-import * as Rickshaw from 'rickshaw';
 import { Component, Optional, ViewChild, ViewContainerRef, OnInit } from '@angular/core';
 import { Currency } from './model/index';
-import * as $ from 'jquery';
-window['$'] = window['jQuery'] = $;
 
 @Component({
   selector: 'app-root',
@@ -14,18 +10,50 @@ export class AppComponent implements OnInit {
 
   private isDarkTheme: boolean = false;
 
-  @ViewChild('graph', { read: ViewContainerRef }) private graphRef: ViewContainerRef;
-  @ViewChild('legend', { read: ViewContainerRef }) private legendRef: ViewContainerRef;
 
   private selectedCurrency: string;
 
   private currencies: Array<Currency>;
 
-  graph: any;
-  hoverDetail: any;
-  legend: any;
-  shelving: any;
-  axes: any;
+  public lineChartData: Array<any> = [
+    { data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A' },
+    { data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B' },
+    { data: [18, 48, 77, 9, 100, 27, 40], label: 'Series C' }
+  ];
+  public lineChartLabels: Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+  public lineChartOptions: any = {
+    animation: false,
+    responsive: true
+  };
+  public lineChartColors: Array<any> = [
+    { // grey      
+      fill:false,
+      borderColor: 'rgba(148,159,177,1)',
+      pointBackgroundColor: 'rgba(148,159,177,1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+    },
+    { // dark grey
+      fill:false,
+      backgroundColor: 'rgba(77,83,96,0.2)',
+      borderColor: 'rgba(77,83,96,1)',
+      pointBackgroundColor: 'rgba(77,83,96,1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(77,83,96,1)'
+    },
+    { // grey    
+      fill:false,  
+      borderColor: 'rgba(148,159,177,1)',
+      pointBackgroundColor: 'rgba(148,159,177,1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+    }
+  ];
+  public lineChartLegend: boolean = true;
+  public lineChartType: string = 'line';
 
   /**
    * Main component
@@ -39,51 +67,28 @@ export class AppComponent implements OnInit {
 
   public ngOnInit() {
 
-    let seriesData = [[], [], []];
-    let random = new Rickshaw.Fixtures.RandomData(150);
-    for (var i = 0; i < 150; i++) {
-      random.addData(seriesData);
-    }
-
-    this.graph = new Rickshaw.Graph({
-      element: this.graphRef.element.nativeElement,
-	    width: 800,
-	    height: 500,      
-      renderer: 'line',
-      series: [
-        {
-          color: 'steelblue',
-          data: [{ x: 0, y: 23 }, { x: 1, y: 15 }, { x: 2, y: 79 }],
-          name: 'USD/HUF',
-        }, {
-          color: 'lightblue',
-          data: [{ x: 0, y: 30 }, { x: 1, y: 20 }, { x: 2, y: 64 }],
-          name: 'EUR/HUF',
-        }
-      ]
-    });
-    this.graph.render();
-
-
-    this.hoverDetail = new Rickshaw.Graph.HoverDetail({
-      graph: this.graph
-    });
-    this.legend = new Rickshaw.Graph.Legend({
-      graph: this.graph,
-      element: this.legendRef.element.nativeElement
-    });
-    this.shelving = new Rickshaw.Graph.Behavior.Series.Toggle({
-      graph: this.graph,
-      legend: this.legend
-    });
-    this.axes = new Rickshaw.Graph.Axis.Time({
-      graph: this.graph
-    });
-
-    this.axes.render();
-
   }
 
+
+  public randomize(): void {
+    let _lineChartData: Array<any> = new Array(this.lineChartData.length);
+    for (let i = 0; i < this.lineChartData.length; i++) {
+      _lineChartData[i] = { data: new Array(this.lineChartData[i].data.length), label: this.lineChartData[i].label };
+      for (let j = 0; j < this.lineChartData[i].data.length; j++) {
+        _lineChartData[i].data[j] = Math.floor((Math.random() * 100) + 1);
+      }
+    }
+    this.lineChartData = _lineChartData;
+  }
+
+  // events
+  public chartClicked(e: any): void {
+    console.log(e);
+  }
+
+  public chartHovered(e: any): void {
+    console.log(e);
+  }
 
 }
 
