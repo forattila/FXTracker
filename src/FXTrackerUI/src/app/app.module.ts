@@ -7,24 +7,33 @@ import { HttpModule } from '@angular/http';
 import { MaterialModule } from '@angular/material';
 import {routing} from './routes';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
+import {FlexLayoutModule} from "@angular/flex-layout";
+import {provideStore} from '@ngrx/store';
 
 import { AppComponent } from './app.component';
+import { ChartComponent } from './components/index';
+
+import {FxRateService} from './services/index';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ChartComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
     MaterialModule.forRoot(),
+    FlexLayoutModule.forRoot(),
     routing,
     ChartsModule
   ],
   providers: [
         Location,    
     {provide: LocationStrategy, useClass: PathLocationStrategy},
+    FxRateService,
+    provideStore({})
   ],
   bootstrap: [AppComponent]
 })
