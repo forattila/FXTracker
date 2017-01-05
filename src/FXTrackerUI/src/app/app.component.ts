@@ -1,5 +1,10 @@
-import { Component, Optional, ViewChild, ViewContainerRef, OnInit } from '@angular/core';
-import { Currency,ChartData } from './model/index';
+import { Component, Optional, ViewChild, ViewContainerRef, OnInit, OnDestroy } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable, Subscription } from "rxjs/Rx";
+import { Currency, ChartData } from './model/index';
+import { IAppStore } from './interfaces/index';
+import {FxRateService} from './services/index';
+
 
 @Component({
   selector: 'app-root',
@@ -8,29 +13,35 @@ import { Currency,ChartData } from './model/index';
 })
 export class AppComponent implements OnInit {
 
+  private subscriptions: Array<Subscription>;
+
   private isDarkTheme: boolean = false;
 
   private selectedCurrency: string;
 
   private currencies: Array<Currency>;
 
-
-
   /**
    * Main component
    */
-  constructor() {
-    this.currencies = new Array<Currency>();
-    this.currencies.push(new Currency('EUR/HUF', 'EUR/HUF'));
-    this.currencies.push(new Currency('GBP/HUF', 'GBP/HUF'));
-    this.currencies.push(new Currency('USD/HUF', 'USD/HUF'));
+  constructor(private store: Store<IAppStore>, private fxRateService:FxRateService) {
+
   }
 
   public ngOnInit() {
-
+    this.initSubscriptions();
+    this.fxRateService.getCurrencies();
   }
 
+  private initSubscriptions() {
+    if (!this.subscriptions) {
+      this.subscriptions = new Array<Subscription>();      
+    }
 
+    this.subscriptions.push(this.store.select(s=>s.currencies).subscribe(currencies=>{
+        this.currencies = currencies;
+    }));
+  }
 
 }
 
