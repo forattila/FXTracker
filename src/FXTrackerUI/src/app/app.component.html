@@ -11,10 +11,11 @@
                 <md-option *ngFor="let currency of currencies" [value]="currency.id">
                     {{currency.displayName}}
                 </md-option>
-            </md-select>
-
+            </md-select>        
             <p> Selected value: {{selectedValue}} </p>
+            <button md-raised-button color="primary">Add</button>
+            <button md-raised-button color="accent">Remove</button>
         </form> 
-        <app-chart></app-chart>
+        <app-chart [config]="chartConfig"></app-chart>
     </div>
 </md-sidenav-layout>

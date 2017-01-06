@@ -15,7 +15,7 @@ import { ChartComponent } from './components/index';
 
 import {FxRateService} from './services/index';
 
-import {currencies} from './reducers/index';
+import {currencies,fxRates} from './reducers/index';
 
 @NgModule({
   declarations: [
@@ -36,7 +36,8 @@ import {currencies} from './reducers/index';
     {provide: LocationStrategy, useClass: PathLocationStrategy},
     FxRateService,
     provideStore({
-      currencies
+      currencies,
+      fxRates
     })
   ],
   bootstrap: [AppComponent]
