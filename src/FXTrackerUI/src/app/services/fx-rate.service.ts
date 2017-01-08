@@ -3,20 +3,21 @@ import { Store } from '@ngrx/store';
 import { IAppStore } from '../interfaces/index';
 import { Currency, FxRate } from '../model/index';
 import { CurrencyActions } from '../reducers/index';
+import { HttpService } from './http.service';
+import { ApiUrls } from '../staticConfig';
 
 @Injectable()
 export class FxRateService {
 
-  constructor(private store: Store<IAppStore>) {
+  constructor(private store: Store<IAppStore>, private httpService: HttpService) {
 
   }
 
   public getCurrencies() {
-    let currencies = new Array<Currency>();
-    currencies.push(new Currency('EUR/HUF', 'EUR/HUF'));
-    currencies.push(new Currency('GBP/HUF', 'GBP/HUF'));
-    currencies.push(new Currency('USD/HUF', 'USD/HUF'));
-    this.store.dispatch({ type: CurrencyActions.SET_CURRENCIES, payload: currencies });
+
+    this.httpService.get(ApiUrls.CURRENCIES).subscribe((currencies: Array<Currency>) => {
+      this.store.dispatch({ type: CurrencyActions.SET_CURRENCIES, payload: currencies });
+    });
   }
 
   public getFxRates() {

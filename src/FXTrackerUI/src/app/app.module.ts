@@ -13,7 +13,7 @@ import {provideStore} from '@ngrx/store';
 import { AppComponent } from './app.component';
 import { ChartComponent } from './components/index';
 
-import {FxRateService} from './services/index';
+import {FxRateService,HttpService} from './services/index';
 
 import {currencies,fxRates, selectedCurrencies} from './reducers/index';
 
@@ -35,6 +35,7 @@ import {currencies,fxRates, selectedCurrencies} from './reducers/index';
         Location,    
     {provide: LocationStrategy, useClass: PathLocationStrategy},
     FxRateService,
+    HttpService,
     provideStore({
       currencies,
       selectedCurrencies,
