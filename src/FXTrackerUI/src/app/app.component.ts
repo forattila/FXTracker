@@ -3,6 +3,7 @@ import { Store } from '@ngrx/store';
 import { Observable, Subscription } from "rxjs/Rx";
 import { Currency } from './model/index';
 import { IAppStore } from './interfaces/index';
+import { CurrencyActions } from './reducers/index';
 import { FxRateService } from './services/index';
 import { ChartConfig } from './components/chart/model/index';
 
@@ -21,13 +22,30 @@ export class AppComponent implements OnInit, OnDestroy {
 
   private currencies: Array<Currency>;
 
+  private selectedCurrencies: Array<Currency>;
+
   private chartConfig: ChartConfig;
+
+  private get addDisabled(): boolean {
+    return !this.selectedCurrency || !!this.selectedCurrencies.find(c => c.id === this.selectedCurrency);
+  }
+
+  private get removeDisabled(): boolean {
+    return !this.selectedCurrency || !this.selectedCurrencies.find(c => c.id === this.selectedCurrency);
+  }
+
+  private get hasSelectedCurrency(): boolean{
+    return !!this.selectedCurrencies && this.selectedCurrencies.length>0;
+  }
 
   /**
    * Main component
    */
   constructor(private store: Store<IAppStore>, private fxRateService: FxRateService) {
-    this.chartConfig = new ChartConfig(this.store.select(s => s.fxRates));
+    this.chartConfig = new ChartConfig(
+      this.store.select(s => s.fxRates),
+      this.store.select(s => s.selectedCurrencies)
+    );
   }
 
   public ngOnInit() {
@@ -49,9 +67,26 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.subscriptions.push(this.store.select(s => s.currencies).subscribe(currencies => {
       this.currencies = currencies;
+
+    }));
+
+    this.subscriptions.push(this.store.select(s => s.selectedCurrencies).subscribe(currencies => {
+      this.selectedCurrencies = currencies;
     }));
   }
 
+  private addSelectedCurrency() {
+    let selectedCurrency = this.currencies.find(c => c.id === this.selectedCurrency);
+    if (selectedCurrency) {
+      this.store.dispatch({ type: CurrencyActions.ADD_SELECTED_CURRENCY, payload: selectedCurrency });
+    }
+  }
 
+  private removeSelectedCurrency() {
+    let selectedCurrency = this.currencies.find(c => c.id === this.selectedCurrency);
+    if (selectedCurrency) {
+      this.store.dispatch({ type: CurrencyActions.REMOVE_SELECTED_CURRENCY, payload: selectedCurrency });
+    }
+  }
 }
 

@@ -7,15 +7,17 @@
 
     <div class="app-content">
         <form>
-            <md-select placeholder="Selected currency" [(ngModel)]="selectedValue" name="currency">
+            <md-select placeholder="Selected currency" [(ngModel)]="selectedCurrency" name="currency">
                 <md-option *ngFor="let currency of currencies" [value]="currency.id">
                     {{currency.displayName}}
                 </md-option>
-            </md-select>        
-            <p> Selected value: {{selectedValue}} </p>
-            <button md-raised-button color="primary">Add</button>
-            <button md-raised-button color="accent">Remove</button>
-        </form> 
-        <app-chart [config]="chartConfig"></app-chart>
+            </md-select>
+            <p> Selected value: {{selectedCurrency}} </p>
+            <button md-raised-button color="primary" (click)="addSelectedCurrency()" [disabled]="addDisabled">Add</button>
+            <button md-raised-button color="accent" (click)="removeSelectedCurrency()" [disabled]="removeDisabled">Remove</button>
+        </form>
+        <div *ngIf="hasSelectedCurrency">
+            <app-chart [config]="chartConfig"></app-chart>
+        </div>
     </div>
 </md-sidenav-layout>
