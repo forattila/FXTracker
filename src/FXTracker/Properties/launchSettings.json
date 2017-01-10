@@ -19,11 +19,11 @@
     "FXTracker": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/values",
+      "launchUrl": "api/currencies/fxrates",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "http://localhost:58580"
+      "applicationUrl": "http://localhost:5000"
     }
   }
 }
