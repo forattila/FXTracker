@@ -6,4 +6,6 @@ export class ApiControllers {
 
 export class ApiUrls {
     public static readonly CURRENCIES: string = environment.apiUrl + ApiControllers.CURRENCIES + '/currencies';
+    public static readonly FXRATES: string = environment.apiUrl + ApiControllers.CURRENCIES + '/fxrates';
+    
 }

@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using FXTracker.Interfaces.Repository;
+using FXTracker.Repositories;
 
 namespace FXTracker
 {
@@ -30,7 +32,7 @@ namespace FXTracker
             // Add framework services.
             services.AddMvc();
             services.AddCors(corsOptions => corsOptions.AddPolicy("AllowAnyOrigin", builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()));
-
+            services.AddSingleton<IFXRateRepository, FXRateRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

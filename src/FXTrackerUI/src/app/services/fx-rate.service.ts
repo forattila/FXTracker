@@ -21,16 +21,11 @@ export class FxRateService {
   }
 
   public getFxRates() {
-    let fxRates = new Array<FxRate>();
-    for (let i = 0; i < 7; i++) {
-      let eurhufRate = 305 + Math.floor(Math.random() * 10);
-      let gbphufRate = 360 + Math.floor(Math.random() * 10);
-      let usdhufRate = 290 + Math.floor(Math.random() * 10);
-      fxRates.push(new FxRate('EUR/HUF', new Date(2016, i, 1), eurhufRate));
-      fxRates.push(new FxRate('GBP/HUF', new Date(2016, i, 1), gbphufRate));
-      fxRates.push(new FxRate('USD/HUF', new Date(2016, i, 1), usdhufRate));
-    }
-    this.store.dispatch({ type: CurrencyActions.SET_FXRATES, payload: fxRates })
+
+    this.httpService.get(ApiUrls.FXRATES).subscribe((fxRates: Array<FxRate>) => {
+      this.store.dispatch({ type: CurrencyActions.SET_FXRATES, payload: fxRates })
+    });
+
   }
 
 }
