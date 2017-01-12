@@ -16,13 +16,22 @@ namespace FXTracker.Controllers
     public class CurrenciesController : Controller
     {
 
+        // The repository containing the exchange rate informations
         private IFXRateRepository fxRateRepository;
 
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        /// <param name="fxRateRepository">injected repository</param>
         public CurrenciesController(IFXRateRepository fxRateRepository)
         {
             this.fxRateRepository = fxRateRepository;
         }
 
+        /// <summary>
+        /// List of currency pairs
+        /// </summary>
+        /// <returns></returns>
         [Route(nameof(Currencies))]
         [HttpGet]
         public IEnumerable<Currency> Currencies()
@@ -30,6 +39,10 @@ namespace FXTracker.Controllers
             return fxRateRepository.Currencies;
         }
 
+        /// <summary>
+        /// List of exchange rates
+        /// </summary>
+        /// <returns></returns>
         [Route(nameof(FXRates))]
         [HttpGet]
         public IEnumerable<FXRate> FXRates()
